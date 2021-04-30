@@ -1,0 +1,21 @@
+name: crymail
+version: 0.1.0
+
+authors:
+  - WhoAteDaCake <doitsimplefy@gmail.com>
+
+targets:
+  crymail:
+    main: src/crymail.cr
+
+crystal: 1.0.0
+
+license: MIT
+
+dependencies:
+  crsfml:
+    github: oprypin/crsfml
+  imgui:
+    github: oprypin/crystal-imgui
+  imgui-sfml:
+    github: oprypin/crystal-imgui-sfml
