@@ -19,3 +19,5 @@ dependencies:
     github: oprypin/crystal-imgui
   imgui-sfml:
     github: oprypin/crystal-imgui-sfml
+  sqlite3:
+    github: crystal-lang/crystal-sqlite3

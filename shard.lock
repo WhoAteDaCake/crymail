@@ -4,6 +4,10 @@ shards:
     git: https://github.com/oprypin/crsfml.git
     version: 2.5.2
 
+  db:
+    git: https://github.com/crystal-lang/crystal-db.git
+    version: 0.10.1
+
   imgui:
     git: https://github.com/oprypin/crystal-imgui.git
     version: 0.1.0+git.commit.7381050dec5949e5e7bc4eccab82f8af5b31699c
@@ -11,4 +15,8 @@ shards:
   imgui-sfml:
     git: https://github.com/oprypin/crystal-imgui-sfml.git
     version: 2.1.0+git.commit.c9c1791318801f00ce1a83d68e9edd14d473d504
+
+  sqlite3:
+    git: https://github.com/crystal-lang/crystal-sqlite3.git
+    version: 0.18.0
 

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+export LD_LIBRARY_PATH="$(pwd)/lib/imgui-sfml"
+fwatcher -e create --dir ./dist --on-start -- bash -c "sleep 1 && ./dist/crymail"
