@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+fwatcher --all-events \
+  --dir src \
+  --on-start \
+  -- crystal build ./src/crymail.cr -o ./dist/crymail
