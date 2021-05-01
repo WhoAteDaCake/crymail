@@ -3,10 +3,10 @@ require "db"
 require "log"
 require "./version"
 
-Logger = Log.for("Storage")
 DB_FILE="data.db"
 
 class Storage
+  Logger = Log.for("storage")
   @conn : DB::Database 
 
   def initialize(path : String)
