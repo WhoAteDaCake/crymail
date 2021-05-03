@@ -2,8 +2,8 @@ require "crsfml"
 require "imgui"
 require "imgui-sfml"
 
-window = SF::RenderWindow.new(SF::VideoMode.new(1280, 720), "ImGui + SFML = <3")
-window.framerate_limit = 60
+window = SF::RenderWindow.new(SF::VideoMode.new(100, 220), "ImGui + SFML = <3")
+window.framerate_limit = 30
 ImGui::SFML.init(window)
 
 shape = SF::CircleShape.new(100)

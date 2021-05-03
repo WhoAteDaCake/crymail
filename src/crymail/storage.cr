@@ -6,7 +6,7 @@ require "./version"
 DB_FILE="data.db"
 
 class Storage
-  Logger = Log.for("storage")
+  Logger = Log.for("storage", :debug)
   @conn : DB::Database 
 
   def initialize(path : String)
@@ -31,11 +31,21 @@ class Storage
     Logger.info { "Running database setup" }
     Logger.info { "Creating tables" }
     @conn.exec "create table config (key text, value text)"
+    @conn.exec "create table sizes (x0 int, y0 int, width int, height int)"
 
-
+    Logger.info { "Inserting data" }
     args = [] of DB::Any
     args << Crymail::VERSION
     @conn.exec "insert into config (key, value) values ('version', ?)", args: args
   end
+
+  def get_sizes(): Tuple(Int16, Int16, Int16, Inat16) | Nil
+    result = Nil
+    @conn.query "select x0, y0, width, height from sizes" do | rs |
+      
+    end
+    result
+  end 
+
 
 end
