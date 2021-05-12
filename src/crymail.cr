@@ -1,51 +1,59 @@
-require "crsfml"
-require "imgui"
-require "imgui-sfml"
 
-require "log"
-require "./crymail/storage"
-require "./crymail/version"
+require "gobject/gtk/autorun"
+require "./ui/components/Login"
 
-Log.setup(:debug)
-Logger = Log.for("crymail", :debug)
-Logger.info { "Running at version: [#{Crymail::VERSION}]"}
+window = Gtk::Window.new
+window.title = "Box demo!"
+window.connect "destroy", &->Gtk.main_quit
+# window.border_width = 10
 
-database = Storage.new("./data")
+# name_container = Gtk::Box.new :vertical, spacing: 2
 
-window = SF::RenderWindow.new(SF::VideoMode.new(100, 720), "ImGui + SFML = <3")
-window.framerate_limit = 30
-ImGui::SFML.init(window)
+# name_label = Gtk::Label.new "Enter name"
+# name_container.pack_start(name_label, expand: true, fill: true, padding: 10)
 
-shape = SF::CircleShape.new(100)
-shape.fill_color = SF::Color::Green
+# name_entry = Gtk::Entry.new
+# name_entry.connect("changed") { p! name_entry.text }
+# name_container.pack_start(name_entry, expand: true, fill: true, padding: 10)
 
-buf = ImGui::TextBuffer.new(100)
-f = 0.6f32
+# name_submit = Gtk::Button.new label: "OK!"
+# name_submit.connect("clicked") { puts name_submit }
+# name_container.pack_start(name_submit, expand: true, fill: true, padding: 10)
 
-delta_clock = SF::Clock.new
-while window.open?
-  while (event = window.poll_event)
-    ImGui::SFML.process_event(event)
+# remarks_container = Gtk::Box.new :horizontal, 2
 
-    if event.is_a? SF::Event::Closed
-      window.close
-    end
-  end
+# remarks_label = Gtk::Label.new "Enter remarks"
+# remarks_container.pack_start(remarks_label, expand: true, fill: true, padding: 5)
 
-  ImGui::SFML.update(window, delta_clock.restart)
+# remarks_entry = Gtk::Entry.new
+# remarks_container.pack_start(remarks_entry, expand: true, fill: true, padding: 5)
 
-  ImGui.begin("Hello, world!")
-  if ImGui.button("Save")
-    p! buf.to_s, f # Executed when the button gets clicked
-  end
-  ImGui.input_text("string", buf)
-  ImGui.slider_float("float", pointerof(f), 0.0, 1.0)
-  ImGui.end
+# remarks_submit = Gtk::Button.new label: "Save"
+# remarks_submit.on_clicked { puts "Stored remarks: #{remarks_entry.text}" }
+# remarks_container.pack_start(remarks_submit, expand: true, fill: true, padding: 5)
 
-  window.clear
-  window.draw(shape)
-  ImGui::SFML.render(window)
-  window.display
+# root = Gtk::Box.new :vertical, spacing: 2
+# root.add name_container
+# root.add remarks_container
+# window.add root
+def login()
+  puts "hello"
 end
+# login = ->() {
+#   puts "Hello"
+# }
 
-ImGui::SFML.shutdown
+container = Login.render(->login)
+window.add container
+
+window.show_all
+
+# require "log"
+# require "./crymail/storage"
+# require "./crymail/version"
+
+# Log.setup(:debug)
+# Logger = Log.for("crymail", :debug)
+# Logger.info { "Running at version: [#{Crymail::VERSION}]"}
+
+# # database = Storage.new("./data")

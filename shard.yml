@@ -13,11 +13,6 @@ crystal: 1.0.0
 license: MIT
 
 dependencies:
-  crsfml:
-    github: oprypin/crsfml
-  imgui:
-    github: oprypin/crystal-imgui
-  imgui-sfml:
-    github: oprypin/crystal-imgui-sfml
-  sqlite3:
-    github: crystal-lang/crystal-sqlite3
+  gobject:
+    github: jhass/crystal-gobject
+    version: ~> 0.10.0
