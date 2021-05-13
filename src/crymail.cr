@@ -1,6 +1,63 @@
 
 require "gobject/gtk/autorun"
+require "http/server"
+require "uri"
+require "http/client"
 require "./ui/components/Login"
+require "./crymail/data.cr"
+
+CLIENT_ID="236467804844-87phejf0vcq86rhc93ud679b1maul3i9.apps.googleusercontent.com"
+CLIENT_SECRET="vUhYtrbFHmjy4oDoJTCx9lFZ"
+
+PORT = 9006
+ENDPOINT = "https://accounts.google.com/o/oauth2/v2/auth"
+TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
+SCOPES = [
+  "https://mail.google.com/",
+  "https://www.googleapis.com/auth/userinfo.email",
+  "https://www.googleapis.com/auth/userinfo.profile",
+].join(" ")
+
+REQUEST_URL = URI.encode("#{ENDPOINT}?client_id=#{CLIENT_ID}&redirect_uri=http://127.0.0.1:#{PORT}&response_type=code&access_type=offline&prompt=select_account&scope=#{SCOPES}")
+
+def login()
+  # xdg-open
+  Process.run("xdg-open", [REQUEST_URL])
+  channel = Channel(OauthResponse).new
+
+  server = HTTP::Server.new do |context|
+    code = context.request.query_params["code"]
+    context.response.content_type = "text/plain"
+    context.response.print "Please close the window and go back to the Application"
+
+    params = HTTP::Params.new
+    params.add("client_id", CLIENT_ID)
+    params.add("client_secret", CLIENT_SECRET)
+    params.add("code", code)
+    params.add("redirect_uri", "http://127.0.0.1:#{PORT}")
+    params.add("grant_type", "authorization_code")
+    url = "#{TOKEN_ENDPOINT}?#{params.to_s}"
+
+    response = HTTP::Client.post url
+    data = OauthResponse.from_json(response.body)
+    channel.send(data)
+  end
+  
+  address = server.bind_tcp PORT
+  puts "Listening on http://#{address}"
+  spawn do
+    server.listen
+  end
+
+  puts "tests"
+  output = channel.receive
+  server.close
+
+  puts output
+  # puts "Hello"
+
+  
+end
 
 window = Gtk::Window.new
 window.title = "Box demo!"
@@ -36,9 +93,6 @@ window.connect "destroy", &->Gtk.main_quit
 # root.add name_container
 # root.add remarks_container
 # window.add root
-def login()
-  puts "hello"
-end
 # login = ->() {
 #   puts "Hello"
 # }
