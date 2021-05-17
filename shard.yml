@@ -16,3 +16,5 @@ dependencies:
   gobject:
     github: jhass/crystal-gobject
     version: ~> 0.10.0
+  sqlite3:
+    github: crystal-lang/crystal-sqlite3

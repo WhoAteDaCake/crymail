@@ -7,11 +7,11 @@ DB_FILE="data.db"
 
 class Storage
   Logger = Log.for("storage", :debug)
-  @conn : DB::Database 
+  property conn : DB::Database 
 
   def initialize(path : String)
     path = Path[path].join(DB_FILE).expand
-    File.delete(path)
+    # File.delete(path)
     
     init = false
     if !File.exists?(path)
@@ -30,7 +30,7 @@ class Storage
   def setup()
     Logger.info { "Running database setup" }
     Logger.info { "Creating tables" }
-    @conn.exec "create table config (key text, value text)"
+    @conn.exec "create table config (key text NOT NULL UNIQUE, value text NOT NULL)"
     @conn.exec "create table sizes (x0 int, y0 int, width int, height int)"
 
     Logger.info { "Inserting data" }
