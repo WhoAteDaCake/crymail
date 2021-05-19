@@ -3,5 +3,5 @@
 # export LD_LIBRARY_PATH="$(pwd)/lib/imgui-sfml"
 fwatcher --all-events \
   --dir src \
-  --on-start \
-  -- crystal build ./src/crymail.cr -o ./dist/crymail
+  -x \
+  execute crystal build ./src/crymail.cr -o ./dist/crymail

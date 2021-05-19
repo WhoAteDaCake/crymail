@@ -1,5 +1,5 @@
 
-require "gobject/gtk/autorun"
+require "gobject/gtk"
 require "http/server"
 require "uri"
 require "http/client"
@@ -11,9 +11,9 @@ require "./crymail/storage"
 require "./crymail/version"
 require "./crymail/auth"
 
-Log.setup(:debug)
+Log.setup(:debug, backend: Log::IOBackend.new(dispatcher: Log::DispatchMode::Direct))
 Logger = Log.for("crymail", :debug)
-# Logger.info { "Running at version: [#{Crymail::VERSION}]"}
+Logger.info { "Running at version: [#{Crymail::VERSION}]"}
 
 storage = Storage.new("./data")
 auth = Auth.new(storage)
@@ -22,11 +22,8 @@ auth = Auth.new(storage)
 window = Gtk::Window.new
 window.title = "Box demo!"
 window.connect "destroy", &->Gtk.main_quit
-# window.border_width = 10
 
-# name_container = Gtk::Box.new :vertical, spacing: 2
 
-# name_label = Gtk::Label.new "Enter name"
 # name_container.pack_start(name_label, expand: true, fill: true, padding: 10)
 
 # name_entry = Gtk::Entry.new
@@ -62,12 +59,17 @@ window.add container
 
 window.show_all
 
-# require "log"
-# require "./crymail/storage"
-# require "./crymail/version"
+fun main(argc: Int32, argv : UInt8**) : Int32
+  Crystal.main do
+    LibGtk.init pointerof(argc), pointerof(argv)
 
-# Log.setup(:debug)
-# Logger = Log.for("crymail", :debug)
-# Logger.info { "Running at version: [#{Crymail::VERSION}]"}
+    Crystal.main_user_code(argc, argv)
 
-# # database = Storage.new("./data")
+    LibGtk.main
+  end
+end
+
+Signal::INT.trap do
+  Gtk.main_quit
+  exit
+end
